@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DES Encryption and Decryption</title>
+    <link
+      rel="icon"
+      href="https://www.devglan.com/style/img/favicon.ico"
+      type="image/x-icon"
+    />
+  </head>
+
+  <body
+    class="bg-light"
+    ng-app="devStack"
+    ng-controller="desController"
+    ng-init="initial(&#39;https://www.devglan.com/online-tools/triple-des-encrypt-decrypt&#39;, &#39;Triple DES Encryption and Decryption Online&#39;, &#39;Triple DES encryption and decryption online tool for free.It is an DES calculator that performs encryption and decryption of text in ECB and CBC mode. The output can be base64 or Hex encoded.&#39;)"
+  >
+  
+
+      <main id="content">
+        <div id="toaster" class="hidden">
+          <span id="toasterMessage">This is a toaster notification!</span>
+          <button id="closeToaster">Close</button>
+        </div>
+        <section class="section">
+          <div class="container">
+            <div class="row gap-y">
+              <div class="col-md-9 col-sm-12 col-12">
+                <div class="row text-center">
+                  <h1>DES Encryption and Decryption Tool</h1>
+                </div>
+                <div class="col-md-12 col-sm-12 col-12">
+                  <p>
+                    <a
+                      href="https://www.cs.sjsu.edu/~stamp/CS265/SecurityEngineering/chapter5_SE/tripleDES.html"
+                      rel="nofollow"
+                      >Triple DES or DESede</a
+                    >
+                    , a symmetric-key algorithm for the encryption of electronic
+                    data, is the successor of
+                    <a
+                      href="https://en.wikipedia.org/wiki/Data_Encryption_Standard"
+                      rel="nofollow"
+                      >DES(Data Encryption Standard)</a
+                    >
+                    and provides more secure encryption then DES. The Triple DES
+                    breaks the user-provided key into three subkeys as k1, k2,
+                    and k3. A message is encrypted with k1 first, then decrypted
+                    with k2 and encrypted again with k3. The DESede key size is
+                    128 or 192 bit and blocks size 64 bit. There are 2 modes of
+                    operation - Triple ECB (Electronic Code Book) and Triple CBC
+                    (Cipher Block Chaining).
+                  </p>
+                  <p>
+                    Below is the online free tool that provides triple DES
+                    encryption and decryption with the two modes of operation
+                    for any plain text.
+                  </p>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-sm-6 col-12">
+                    <form role="form">
+                      <h2> DES Encryption</h2>
+                      <div class="form-group">
+                        <label for="inputString"
+                          >Enter text to be Encrypted</label
+                        >
+                        <textarea
+                          id="inputString"
+                          class="form-control input-lg"
+                          rows="5"
+                          placeholder="Enter plain text to hash"
+                          name="textToEncrypt"
+                        ></textarea>
+                      </div>
+                      <div class="form-group">
+                        <label for="mode">Select Mode</label>
+                        <select
+                          class="form-control input-lg"
+                          ng-model="mode"
+                          id="mode"
+                        >
+                          <option value="ECB" selected>ECB</option>
+                          <option value="CBC">CBC</option>
+                        </select>
+                      </div>
+                      <div class="form-group" ng-show="showDecryptIV">
+                        <label for="decryptivinput"
+                          >Enter IV Used During Encryption(Optional)</label
+                        >
+                        <input
+                          class="form-control input-lg"
+                          id="encryptivinput"
+                          placeholder="Enter initialization vector"
+                          name="decryptiv"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label for="secretkey">Enter Secret Key</label>
+                        <input
+                          class="form-control input-lg"
+                          id="secretkey"
+                          placeholder="Enter secret key"
+                          name="secretkey"
+                        />
+                      </div>
+                      <form id="myForm">
+                        <label>Output Text Format:</label>
+                        <label><input
+                          type="radio"
+                          name="encryptOutputFormat"
+                          id="Base64"
+                          value="Base64"
+                        />Base64</label>
+                        <label><input
+                          type="radio"
+                          name="encryptOutputFormat"
+                          id="Hex"
+                          value="Hex"
+                        />Hex</label>
+                        
+                      </form>
+                      <div class="form-group">
+                        <button
+                          class="btn btn-primary"
+                          name="hash"
+                          value="hash"
+                          id="encryptButton"
+                        >
+                          Encrypt
+                        </button>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="outputString"
+                          >DES Encrypted Output:</label
+                        >
+                        <textarea
+                          id="outputString"
+                          class="form-control input-lg"
+                          rows="5"
+                          placeholder="Result goes here"
+                        ></textarea>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="col-md-6 col-sm-6 col-xs-12 vertical-line">
+                    <form role="form">
+                      <h2> DES Decryption</h2>
+                      <div class="form-group">
+                        <label for="dinputString"
+                          >Enter text to be Decrypted</label
+                        >
+                        <textarea
+                          id="dinputString"
+                          class="form-control input-lg"
+                          rows="5"
+                          ng-model="textToDecrypt"
+                          placeholder="Enter text to Decrypt"
+                          name="textToDecrypt"
+                        ></textarea>
+                      </div>
+                      <form>
+                        <label>Input Text Format:</label>
+                        <input
+                          type="radio"
+                          name="decryptInputFormat"
+                          value="Base64"
+                          id="dBase64"
+                        />Base64
+                        <input
+                          type="radio"
+                          name="decryptInputFormat"
+                          value="Hex"
+                          id="dHex"
+                        />Hex
+                      </form>
+                      <div class="form-group">
+                        <label for="dmode">Select Mode</label>
+                        <select
+                          class="form-control input-lg"
+                          ng-model="dmode"
+                          id="dmode"
+                          ng-change="decryptModeSelected()"
+                        >
+                          <option value="ECB" selected>ECB</option>
+                          <option value="CBC">CBC</option>
+                        </select>
+                      </div>
+                      <div class="form-group" ng-show="showDecryptIV">
+                        <label for="decryptivinput"
+                          >Enter IV Used During Encryption(Optional)</label
+                        >
+                        <input
+                          class="form-control input-lg"
+                          id="decryptivinput"
+                          ng-model="decryptiv"
+                          placeholder="Enter initialization vector"
+                          name="decryptiv"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label for="secretkey">Enter Secret Key</label>
+                        <input
+                          class="form-control input-lg"
+                          id="dsecretkey"
+                          ng-model="dsecretkey"
+                          placeholder="Enter secret key"
+                          name="secretkey"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <button
+                          class="btn btn-primary"
+                          name="hash"
+                          value="hash"
+                          id="decrypButton"
+                        >
+                          Decrypt
+                        </button>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="doutputString"
+                          >Triple DES Decrypted Output
+                          <strong id="typeSelected"></strong>:</label
+                        >
+                        <textarea
+                          id="doutputString"
+                          class="form-control input-lg"
+                          placeholder="Base64 encoded result goes here"
+                          ng-model="decryptedString"
+                          rows="5"
+                        ></textarea>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="row">
+                  <h4>
+                    <!-- If You Appreciate What We Do Here On Devglan, You Can
+                    Consider: -->
+                  </h4>
+
+                </div>
+                <div class="row">
+                  <h2>Usage Guide</h2>
+                  <p>
+                    <strong
+                      >Any plain-text input or output that you enter or we
+                      generate is not stored on this site, this tool is provided
+                      via an HTTPS URL to ensure that secret keys cannot be
+                      stolen.</strong
+                    >
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-3 col-sm-12 col-12 row-off">
+                <div class="mb-9">
+                  <h3 class="h5 mb-4 text-primary">Other Encryption Tools</h3>
+                  <ul class="list-group">
+                    <li
+                      class="list-group-item justify-content-between align-items-center"
+                    >
+                      <a
+                        class="text-dark anim-link-2"
+                        href="https://bcrypt-generator.com/"
+                        >Bcrypt</a
+                      >
+                    </li>
+                    <li
+                      class="list-group-item justify-content-between align-items-center"
+                    >
+                      <a
+                        class="text-dark anim-link-2"
+                        href="https://www.md5hashgenerator.com/"
+                        >MD5 Hash Generator</a
+                      >
+                    </li>
+                    <li
+                      class="list-group-item justify-content-between align-items-center"
+                    >
+                      <a
+                        class="text-dark anim-link-2"
+                        href="https://www.rsa.com/"
+                        >RSA Encryption</a
+                      >
+                    </li>
+                    <li
+                      class="list-group-item justify-content-between align-items-center"
+                    >
+                      <a
+                        class="text-dark anim-link-2"
+                        href="https://en.wikipedia.org/wiki/SHA-3"
+                        >SHA-3</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </section>
+      </main>
+      <!--Footer-Wrap-->
+      <footer class="border-top footer_ad">
+        <!-- Copyright -->
+        <div class="container m-gab-1 border-top">
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <p>
+                <span class="fs-17">©</span> 2023
+                <span class="m-link">Bismark</span>. All rights reserved.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- End Copyright -->
+      </footer>
+      <!--End Footer-Wrap-->
+    </div>
+
+    <link
+      href="4.3.1/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script
+      src="4.3.1/js/bootstrap.min.js"
+      async
+    ></script>
+    <link
+      rel="stylesheet"
+      href="font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" type="text/css"/>
+    <script src="script.js" defer></script>
+  </body>
+
+</html>
